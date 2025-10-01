@@ -5,6 +5,7 @@ python teacher.py
 
 ### 2. Start Server
 python server.py
+
 python backup_server.py
 
 ### 3. Start Client
