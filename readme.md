@@ -1,11 +1,9 @@
-Follow the steps to execute the code:
+Follow the steps to execute the code in terminal: (run all commands in different terminals)
 # 1. Start Teacher
 python teacher.py
 
 # 2. Start Server
 python server.py
-
-
 python backup_server.py
 
 # 3. Start Client
@@ -32,11 +30,13 @@ python student5.py 127.0.0.1 9105
 # 10. Trigger ISA Phase
 python trigger.py
 
+Follow the steps to view UI (until mcq exams and result update)
+(Run all commands in different terminals)
 
-python flask_backend.py
+# 1. python flask_backend.py
 
-cd ds-frontend
-npm run dev
+# 2. cd ds-frontend
+#    npm run dev
 
 
 
