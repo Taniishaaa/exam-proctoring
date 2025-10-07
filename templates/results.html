@@ -1,0 +1,20 @@
+<h2>Results for {{ student.name }}</h2>
+
+<p>MCQ Marks: {{ student.marks }}</p>
+
+{% if student.status == "warning" %}
+<p style="color:orange;">⚠️ Warning applied: marks reduced to 80%</p>
+{% elif student.status == "terminated" %}
+<p style="color:red;">⛔ Exam terminated: 0 marks</p>
+{% else %}
+<p>✅ No cheating detected</p>
+{% endif %}
+
+<hr>
+
+{% if student.isa is not none %}
+<p>ISA Marks: {{ student.isa }}</p>
+<p><strong>Final Total: {{ student.marks + student.isa }}</strong></p>
+{% else %}
+<p>ISA Marks: <em>Not submitted yet</em></p>
+{% endif %}

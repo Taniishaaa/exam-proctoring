@@ -1,0 +1,75 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    padding: 50px;
+    margin: 0;
+  }
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+  }
+
+  form {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40,167,69,0.3);
+  }
+
+  .button-container {
+    text-align: center;
+  }
+
+  button {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+</style>
+
+<h2>Enter ISA Marks</h2>
+<form method="post" action="{{ url_for('isa_submit', roll=roll) }}">
+    <input type="number" name="isa_marks" min="0" max="100" required>
+    <button type="submit">Submit</button>
+</form>

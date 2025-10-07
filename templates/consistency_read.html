@@ -1,0 +1,50 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    text-align: center;
+    padding-top: 80px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 1.3rem;
+    color: #222;
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.1s ease;
+  }
+
+  button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  form {
+    margin-top: 20px;
+  }
+</style>
+<h2>Read Mode</h2>
+<p>Your marks: {{ marks }}</p>
+<form action="{{ url_for('consistency_exit_cs', roll=roll) }}" method="post">
+  <button>🚪 Exit CS</button>
+</form>

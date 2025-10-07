@@ -1,0 +1,73 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  form {
+    margin-bottom: 20px;
+  }
+
+  button, .no-btn {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  button:hover, .no-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .yes-btn:hover {
+    background: #218838;
+  }
+
+  .no-btn {
+    background: #dc3545;
+    margin-left: 10px;
+  }
+
+  .no-btn:hover {
+    background: #c82333;
+  }
+
+  /* Style the <a> tag as a red button */
+  a {
+    background: #dc3545;
+    color: #fff;
+    padding: 10px 22px;
+    font-size: 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  a:hover {
+    background: #c82333;
+    transform: scale(1.05);
+  }
+</style>
+
+<h2>Do you want to enter ISA marks?</h2>
+<form method="post" action="{{ url_for('isa_request', roll=roll) }}">
+    <button type="submit">Yes</button>
+</form>
+<a href="{{ url_for('student_portal', roll=roll) }}">No</a>

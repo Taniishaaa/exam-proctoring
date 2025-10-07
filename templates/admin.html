@@ -1,0 +1,303 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: inline-block;
+    margin: 10px;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
+  h2, h3 {
+    margin-top: 30px;
+    color: #444;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 5px auto;
+    padding: 10px;
+    width: 250px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  p {
+    color: #ff6600;
+    font-weight: bold;
+  }
+
+  table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  table th, table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
+
+  table th {
+    background: #2c3e50;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  table tr:hover {
+    background: #f9f9f9;
+  }
+
+  table tr:nth-child(even) {
+    background: #f4f7fb;
+  }
+
+  table td {
+    color: #333;
+  }
+
+  .server-box {
+    margin: 10px auto;
+    padding: 12px;
+    width: 300px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+
+  .main-server { border-left: 6px solid #28a745; }
+  .backup-server { border-left: 6px solid #ff6600; }
+
+  /* Flash message styling */
+  #flash-box {
+    margin-top: 15px;
+  }
+  .flash {
+    padding: 12px;
+    margin: 10px auto;
+    width: 400px;
+    border-radius: 6px;
+    font-weight: bold;
+    animation: fadeout 6s forwards;
+  }
+  .flash.main {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .flash.backup {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
+  @keyframes fadeout {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+  }
+
+  /* Server logs styling */
+  .log-box {
+    width: 500px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: left;
+  }
+
+  .log-box h3 {
+    margin-bottom: 10px;
+    color: #444;
+  }
+
+  .log-box ul {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .log-box li {
+    font-size: 14px;
+    color: #333;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    width: auto;
+    box-shadow: none;
+  }
+</style>
+
+<h1>Admin Panel</h1>
+
+<meta http-equiv="refresh" content="5">
+
+<form action="/admin/start_sync" method="post">
+  <button type="submit">Time Sync</button>
+</form>
+
+<form action="/admin/start_exam" method="post">
+  <button type="submit">Start Exam</button>
+</form>
+
+{% if not exam_active and not isa_phase %}
+<form action="/admin/start_isa" method="post">
+  <button type="submit">🚀 Start ISA Phase</button>
+</form>
+{% endif %}
+
+{% if isa_phase and not replication_done %}
+<p>📌 ISA Phase is currently active</p>
+{% elif replication_done %}
+<p>🧩 Replicas created successfully!</p>
+{% endif %}
+
+<form action="/admin/release_results" method="post">
+  <button type="submit">Release Results</button>
+</form>
+
+<form action="/admin/create_replica" method="post">
+  <button type="submit">🧩 Create Replicas</button>
+</form>
+
+<!-- 🔒 NEW: Start Consistency Demo -->
+<form action="/admin/start_consistency" method="post">
+  <button type="submit">🔒 Start Consistency Demo</button>
+</form>
+
+{% if consistency_phase %}
+  <p>🔐 Consistency Demo is currently active</p>
+{% endif %}
+
+{% if synced_times %}
+<h2>Synchronized Times</h2>
+<ul>
+{% for role, t in synced_times.items() %}
+  <li>{{ role }} → {{ t }}</li>
+{% endfor %}
+</ul>
+{% elif time_sync %}
+<p>⏳ Waiting for everyone to submit time...</p>
+{% endif %}
+
+<hr>
+<h3>Exam Status</h3>
+<p id="exam_status">⏳ Waiting...</p>
+<p>Time Remaining: <span id="remaining">--</span> seconds</p>
+
+<hr>
+<h3>Cheating Monitor</h3>
+<table border="1" id="monitor">
+  <tr><th>Roll</th><th>Name</th><th>Status</th><th>Flags</th><th>Marks</th></tr>
+</table>
+
+<hr>
+<h3>Server Load</h3>
+<div class="server-box main-server">
+  ✅ Main Server handled: {{ main_processed }} submissions
+</div>
+<div class="server-box backup-server">
+  📦 Backup Server handled: {{ backup_processed }} submissions
+</div>
+
+{% if messages %}
+  <div id="flash-box">
+    {% for category, msg in messages %}
+      <div class="flash {{ category }}">{{ msg }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if server_logs %}
+<div class="log-box">
+  <h3>Server Processing Logs</h3>
+  <ul>
+    {% for log in server_logs %}
+      <li>{{ log }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<script>
+async function updateStatus() {
+  let res = await fetch("/status");
+  let data = await res.json();
+  let table = document.getElementById("monitor");
+  table.innerHTML = "<tr><th>Roll</th><th>Name</th><th>Status</th><th>Flags</th><th>Marks</th></tr>";
+  for (let roll in data) {
+    let s = data[roll];
+    let color = "green";
+    if (s.status === "warning") color = "orange";
+    if (s.status === "terminated") color = "red";
+    table.innerHTML += `<tr>
+      <td>${roll}</td>
+      <td>${s.name}</td>
+      <td style="color:${color}">${s.status}</td>
+      <td>${s.flags}</td>
+      <td>${s.marks}</td>
+    </tr>`;
+  }
+}
+
+// poll exam status
+async function updateExamStatus() {
+  let res = await fetch("/exam_status");
+  let data = await res.json();
+  let statusElem = document.getElementById("exam_status");
+  let remElem = document.getElementById("remaining");
+  if (data.active) {
+    statusElem.textContent = "🟢 Exam is running";
+    remElem.textContent = data.remaining;
+  } else {
+    statusElem.textContent = "🔴 Exam not active";
+    remElem.textContent = "--";
+  }
+}
+
+setInterval(updateStatus, 5000);
+setInterval(updateExamStatus, 3000);
+updateStatus();
+updateExamStatus();
+</script>

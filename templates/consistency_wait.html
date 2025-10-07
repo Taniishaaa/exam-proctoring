@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Please Wait</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      text-align: center;
+      padding-top: 80px;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .loader {
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #007bff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 30px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .info {
+      font-size: 1.1rem;
+      margin-top: 15px;
+    }
+
+    .note {
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>⏳ Please Wait</h2>
+
+  <div class="loader"></div>
+
+  <div class="info">
+    Another student is currently 
+    <b>{{ 'writing' if lock_type == 'WRITE' else 'reading' }}</b> 
+    marks for this chunk.
+  </div>
+
+  <div class="note">
+    The system will automatically check again shortly.
+  </div>
+
+  <form method="get" action="{{ retry_url }}">
+    <button type="submit">🔁 Retry Now</button>
+  </form>
+
+  <div class="footer">
+    Student {{ roll }} | Consistency Demo
+  </div>
+
+  <script>
+    // Auto-refresh every 4 seconds
+    setTimeout(() => {
+      window.location.href = "{{ retry_url }}";
+    }, 4000);
+  </script>
+</body>
+</html>

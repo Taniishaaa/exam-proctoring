@@ -1,0 +1,65 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    text-align: center;
+    padding-top: 80px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #007bff;
+  }
+
+  form {
+    margin: 15px 0;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.1s ease;
+  }
+
+  button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  /* Exit button styling */
+  form:last-of-type button {
+    background: #dc3545;
+  }
+
+  form:last-of-type button:hover {
+    background: #b02a37;
+  }
+
+  .footer {
+    margin-top: 50px;
+    font-size: 0.85rem;
+    color: #999;
+  }
+</style>
+
+<h2>Consistency Demo</h2>
+<form action="{{ url_for('consistency_read', roll=roll) }}">
+  <button>📖 Read Marks</button>
+</form>
+<form action="{{ url_for('consistency_write', roll=roll) }}">
+  <button>✏️ Write Marks</button>
+</form>
+<form action="{{ url_for('consistency_exit_demo', roll=roll) }}">
+  <button style="background:red;">Exit Demo</button>
+</form>

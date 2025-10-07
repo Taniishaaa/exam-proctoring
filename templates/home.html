@@ -1,0 +1,55 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #b2d6ec 0%, #fafafa 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #222;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      color: #222;
+    }
+
+    form {
+      margin: 15px;
+    }
+
+    button {
+      background: #2878a7;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #215688;
+      transform: scale(1.05);
+    }
+  </style>
+<h1>Welcome to the Online Exam Portal</h1>
+
+<!-- Teacher -->
+<form action="/register_teacher" method="post" target="_blank">
+  <button type="submit">Register as Teacher</button>
+</form>
+
+<!-- Student -->
+<form action="/register_student" method="post" target="_blank">
+  <button type="submit">Register as Student</button>
+</form>
+
+<!-- Admin -->
+<form action="/admin" method="get" target="_blank">
+  <button type="submit">Admin Panel</button>
+</form>

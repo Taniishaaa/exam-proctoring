@@ -1,0 +1,146 @@
+ <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: #444;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #fff;
+      border: 1px solid #ddd;
+      margin: 6px auto;
+      padding: 10px 15px;
+      width: 250px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      color: #333;
+    }
+
+    p {
+      color: #ff6600;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th, table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+table th {
+  background: #2c3e50;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table tr:hover {
+  background: #f9f9f9;
+}
+
+table tr:nth-child(even) {
+  background: #f4f7fb;
+}
+
+table td {
+  color: #333;
+}
+
+  </style>
+<h1>Teacher Panel</h1>
+
+<meta http-equiv="refresh" content="5">
+
+{% if synced_times %}
+<h3>Synced Times</h3>
+<ul>
+{% for role, t in synced_times.items() %}
+  <li>{{ role }} → {{ t }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Waiting for admin to start sync/exam...</p>
+{% endif %}
+
+<hr>
+<h3>Exam Status</h3>
+<p id="exam_status">⏳ Waiting...</p>
+<p>Time Remaining: <span id="remaining">--</span> seconds</p>
+
+<hr>
+<h3>Cheating Monitor</h3>
+<table border="1" id="monitor">
+  <tr><th>Roll</th><th>Name</th><th>Status</th><th>Flags</th><th>Marks</th></tr>
+</table>
+
+<script>
+async function updateStatus() {
+  let res = await fetch("/status");
+  let data = await res.json();
+  let table = document.getElementById("monitor");
+  table.innerHTML = "<tr><th>Roll</th><th>Name</th><th>Status</th><th>Flags</th><th>Marks</th></tr>";
+  for (let roll in data) {
+    let s = data[roll];
+    let color = "green";
+    if (s.status === "warning") color = "orange";
+    if (s.status === "terminated") color = "red";
+    table.innerHTML += `<tr>
+      <td>${roll}</td>
+      <td>${s.name}</td>
+      <td style="color:${color}">${s.status}</td>
+      <td>${s.flags}</td>
+      <td>${s.marks}</td>
+    </tr>`;
+  }
+}
+
+async function updateExamStatus() {
+  let res = await fetch("/exam_status");
+  let data = await res.json();
+  let statusElem = document.getElementById("exam_status");
+  let remElem = document.getElementById("remaining");
+  if (data.active) {
+    statusElem.textContent = "🟢 Exam is running";
+    remElem.textContent = data.remaining;
+  } else {
+    statusElem.textContent = "🔴 Exam not active";
+    remElem.textContent = "--";
+  }
+}
+
+setInterval(updateStatus, 5000);
+setInterval(updateExamStatus, 3000);
+updateStatus();
+updateExamStatus();
+</script>

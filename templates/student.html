@@ -1,0 +1,102 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    padding: 40px;
+    margin: 0;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+  }
+
+  form {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  }
+
+  p {
+    margin: 15px 0 10px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  input[type="radio"] {
+    margin-right: 8px;
+  }
+
+  button {
+    margin: 15px 10px 0;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+
+  .nav-buttons {
+    text-align: center;
+  }
+</style>
+
+<h2>Student {{ roll }} - Question {{ qid }}</h2>
+
+{% if student.cheat_msg %}
+  <p style="color:red;">{{ student.cheat_msg }}</p>
+{% endif %}
+
+{% if student.status == "warning" %}
+<p style="color:orange;">⚠️ You were caught cheating once! Only 50% of your marks will count.</p>
+{% elif student.status == "terminated" %}
+<p style="color:red;">⛔ You were caught cheating twice! Your exam is terminated (0 marks).</p>
+{% endif %}
+
+<p>Time remaining: <span id="timer">{{ remaining }}</span> seconds</p>
+
+<form method="post">
+  <p><b>{{ question.question }}</b></p>
+  {% for oid, opt in question.options.items() %}
+    <input type="radio" name="answer" value="{{ oid }}"
+      {% if selected and selected|int == oid %}checked{% endif %}> {{ opt }}<br>
+  {% endfor %}
+
+  <div class="nav-buttons">
+    {% if prev_qid %}
+      <button type="submit" name="prev">Previous</button>
+    {% endif %}
+    {% if next_qid %}
+      <button type="submit" name="next">Next</button>
+    {% else %}
+      <button type="submit" name="submit">Submit Exam</button>
+    {% endif %}
+  </div>
+</form>
+
+<script>
+  let timeLeft = parseInt("{{ remaining }}");
+  let timerElem = document.getElementById("timer");
+  let form = document.forms[0];
+
+  let countdown = setInterval(() => {
+    timeLeft--;
+    timerElem.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      form.submit();  // Auto-submit last visited question
+    }
+  }, 1000);
+</script>

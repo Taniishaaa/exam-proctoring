@@ -1,0 +1,81 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    text-align: center;
+    padding-top: 80px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
+    margin-bottom: 1.2rem;
+  }
+
+  label {
+    font-size: 1.1rem;
+    color: #222;
+    margin-right: 10px;
+  }
+
+  input[type="number"] {
+    padding: 8px 12px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    width: 120px;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: border 0.25s ease;
+  }
+
+  input[type="number"]:focus {
+    border-color: #0056b3;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.25s ease, transform 0.1s ease;
+  }
+
+  button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  /* Exit button style */
+  form:last-of-type button {
+    background: #dc3545;
+  }
+
+  form:last-of-type button:hover {
+    background: #b02a37;
+  }
+</style>
+
+<h2>Write Mode</h2>
+<form method="post">
+  <label>Current ISA Marks: </label>
+  <input type="number" name="isa_marks" value="{{ marks }}" min="0" max="100" required>
+  <button type="submit">💾 Save</button>
+</form>
+<form action="{{ url_for('consistency_exit_cs', roll=roll) }}" method="post">
+
+  <button>🚪 Exit CS</button>
+</form>
